@@ -23,4 +23,6 @@
     <string name="status">status</string>
     <string name="update">Update</string>
     <string name="create_groups">Create Groups</string>
+    <string name="send">send</string>
+    <string name="message">message</string>
 </resources>

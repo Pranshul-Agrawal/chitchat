@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "148926076286-21oeri2n4fgj97k2gti1fcvakpsvb6bt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.chitchat",
-            "certificate_hash": "e7a49bb48d29016a0a24d548a3caa75845664eab"
-          }
-        },
-        {
           "client_id": "148926076286-m7nnmbs0nlatu2u40ngh6p4ji0sv1h7q.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,9 +1,11 @@
 package com.example.chitchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -42,7 +44,6 @@ public class GroupFragment extends Fragment {
         arrayAdapter = new ArrayAdapter<String>(Objects.requireNonNull(getContext()), android.R.layout.simple_list_item_1, listOfGroups);
         listView.setAdapter(arrayAdapter);
         groupRefrence = FirebaseDatabase.getInstance().getReference().child("Groups");
-
         groupRefrence.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,6 +62,17 @@ public class GroupFragment extends Fragment {
 
             }
         });
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+           {
+               String currentGroupName=adapterView.getItemAtPosition(position).toString();
+               Intent groupChatIntent=new Intent(getContext(),GroupActivity.class);
+               groupChatIntent.putExtra("groupName",currentGroupName);
+               startActivity(groupChatIntent);
+
+           }
+       });
         return groupFragmentView;
 
     }
