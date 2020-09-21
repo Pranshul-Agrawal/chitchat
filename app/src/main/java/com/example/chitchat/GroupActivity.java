@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -12,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class GroupActivity extends AppCompatActivity {
@@ -50,6 +54,48 @@ public class GroupActivity extends AppCompatActivity {
         groupNameRef=FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName);
         getUserInfo();
     }
+
+    protected void onStart() {
+        super.onStart();
+        groupNameRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.exists()) {
+                    Iterator iterator = snapshot.getChildren().iterator();
+                    while (iterator.hasNext()) {
+                        String date = (String) ((DataSnapshot) iterator.next()).getValue();
+                        String time = (String) ((DataSnapshot) iterator.next()).getValue();
+                        String message = (String) ((DataSnapshot) iterator.next()).getValue();
+                        String name = (String) ((DataSnapshot) iterator.next()).getValue();
+
+                        displayMessage.append(name + "\n" + message + "\n" + time + "\t\t\t" + date + "\n\n\n\n");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void sendMessage(View view)
     {
         String message=this.message.getText().toString();
@@ -102,4 +148,5 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">chitchat</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="chats">Chats</string>
     <string name="groups">Groups</string>
     <string name="contacts">Contacts</string>
