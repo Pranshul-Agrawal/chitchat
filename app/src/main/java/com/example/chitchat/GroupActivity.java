@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
+
+import static android.view.View.FOCUS_DOWN;
 
 public class GroupActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -55,23 +58,35 @@ public class GroupActivity extends AppCompatActivity {
         groupNameRef=FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName);
         getUserInfo();
 
+
+
     }
 
     protected void onStart()
     {
+
         super.onStart();
         groupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
                 if (snapshot.exists()) {
                     Iterator iterator = snapshot.getChildren().iterator();
                     while (iterator.hasNext()) {
+                        /* Order must not be changed */
                         String date = (String) ((DataSnapshot) iterator.next()).getValue();
-                        String time = (String) ((DataSnapshot) iterator.next()).getValue();
                         String message = (String) ((DataSnapshot) iterator.next()).getValue();
                         String name = (String) ((DataSnapshot) iterator.next()).getValue();
-                        displayMessage.append(name + "\n" + message + "\n" + time + "\t\t\t" + date + "\n\n\n\n");
-                        mScrollView.fullScroll(View.FOCUS_DOWN);
+                        String time = (String) ((DataSnapshot) iterator.next()).getValue();
+                        displayMessage.append(date+" ("+time+") "+"\n"+message+"\n"+name+"\n\n\n");
+
+                        mScrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+
                     }
                 }
 
@@ -130,7 +145,7 @@ public class GroupActivity extends AppCompatActivity {
             groupMessageKeyRef.updateChildren(messageInfoMap);
         }
         this.message.setText("");
-        mScrollView.fullScroll(View.FOCUS_DOWN);
+        mScrollView.fullScroll(FOCUS_DOWN);
     }
     public void getUserInfo()
     {
