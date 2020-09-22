@@ -39,7 +39,8 @@ public class GroupActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         message=findViewById(R.id.text_reply_box);
@@ -53,9 +54,11 @@ public class GroupActivity extends AppCompatActivity {
         userRef=FirebaseDatabase.getInstance().getReference().child("Users");
         groupNameRef=FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName);
         getUserInfo();
+
     }
 
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         groupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -67,8 +70,8 @@ public class GroupActivity extends AppCompatActivity {
                         String time = (String) ((DataSnapshot) iterator.next()).getValue();
                         String message = (String) ((DataSnapshot) iterator.next()).getValue();
                         String name = (String) ((DataSnapshot) iterator.next()).getValue();
-
                         displayMessage.append(name + "\n" + message + "\n" + time + "\t\t\t" + date + "\n\n\n\n");
+                        mScrollView.fullScroll(View.FOCUS_DOWN);
                     }
                 }
 
@@ -127,7 +130,7 @@ public class GroupActivity extends AppCompatActivity {
             groupMessageKeyRef.updateChildren(messageInfoMap);
         }
         this.message.setText("");
-
+        mScrollView.fullScroll(View.FOCUS_DOWN);
     }
     public void getUserInfo()
     {
