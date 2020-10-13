@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
-    private EditText loginEmail, loginPassword, loginPhone;
+    private EditText loginEmail, loginPassword;
 
     private ProgressDialog progressDialog;
 
@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
     }
 
 
@@ -101,6 +102,13 @@ public class LoginActivity extends AppCompatActivity {
          **$                         End anchor.
          */
         return Pattern.matches("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$", password);
+    }
+
+    public void phoneLogin(View viw)
+    {
+        Intent mainActivityIntent = new Intent(LoginActivity.this,phoneLoginActivity.class);
+        startActivity(mainActivityIntent);
+
     }
 
 }
