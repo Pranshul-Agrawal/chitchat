@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
@@ -29,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 
+import static android.view.View.FOCUS_DOWN;
+
 public class GroupActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private EditText message;
@@ -39,7 +42,8 @@ public class GroupActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         message=findViewById(R.id.text_reply_box);
@@ -53,22 +57,36 @@ public class GroupActivity extends AppCompatActivity {
         userRef=FirebaseDatabase.getInstance().getReference().child("Users");
         groupNameRef=FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName);
         getUserInfo();
+
+
+
     }
 
-    protected void onStart() {
+    protected void onStart()
+    {
+
         super.onStart();
         groupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
+            {
                 if (snapshot.exists()) {
                     Iterator iterator = snapshot.getChildren().iterator();
                     while (iterator.hasNext()) {
+                        /* Order must not be changed */
                         String date = (String) ((DataSnapshot) iterator.next()).getValue();
-                        String time = (String) ((DataSnapshot) iterator.next()).getValue();
                         String message = (String) ((DataSnapshot) iterator.next()).getValue();
                         String name = (String) ((DataSnapshot) iterator.next()).getValue();
+                        String time = (String) ((DataSnapshot) iterator.next()).getValue();
+                        displayMessage.append(date+" ("+time+") "+"\n"+message+"\n"+name+"\n\n\n");
 
-                        displayMessage.append(name + "\n" + message + "\n" + time + "\t\t\t" + date + "\n\n\n\n");
+                        mScrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+
                     }
                 }
 
@@ -127,7 +145,7 @@ public class GroupActivity extends AppCompatActivity {
             groupMessageKeyRef.updateChildren(messageInfoMap);
         }
         this.message.setText("");
-
+        mScrollView.fullScroll(FOCUS_DOWN);
     }
     public void getUserInfo()
     {

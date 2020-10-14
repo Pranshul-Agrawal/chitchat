@@ -115,6 +115,7 @@
             android:background="@drawable/tab"
             android:drawableStart="@drawable/phone"
             android:gravity="center"
+            android:onClick="phoneLogin"
             android:text="@string/login_with_phone"
             android:textColor="#090909"
             android:textSize="17sp" />

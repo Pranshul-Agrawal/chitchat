@@ -24,4 +24,7 @@
     <string name="create_groups">Create Groups</string>
     <string name="send">send</string>
     <string name="message">message</string>
+    <string name="send_otp">send OTP</string>
+    <string name="phone_number">Phone number</string>
+    <string name="otp">OTP</string>
 </resources>
