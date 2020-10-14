@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -90,16 +89,11 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.find_friends:
+                Intent findFriends = new Intent(MainActivity.this, FindFriends.class);
+                startActivity(findFriends);
                 return true;
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                return true;
-            case R.id.log_out:
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
-                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginIntent);
                 return true;
             case R.id.create_groups:
                 final AlertDialog.Builder alertToCreateGroup = new AlertDialog.Builder(MainActivity.this);
