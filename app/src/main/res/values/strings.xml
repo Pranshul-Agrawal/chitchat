@@ -27,4 +27,5 @@
     <string name="send_otp">send OTP</string>
     <string name="phone_number">Phone number</string>
     <string name="otp">OTP</string>
+    <string name="verify">verify</string>
 </resources>
