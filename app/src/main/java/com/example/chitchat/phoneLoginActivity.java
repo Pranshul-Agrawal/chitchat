@@ -33,6 +33,8 @@ public class phoneLoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView sendOtpButton;
     private  TextView otp;
+    private PhoneAuthCredential credential;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,24 +42,22 @@ public class phoneLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_login);
 
         phone_no=findViewById(R.id.phone);
-       sendOtpButton=findViewById(R.id.send_otp);
         otp=findViewById(R.id.otp);
-        otp.setVisibility(View.INVISIBLE);
-
+        sendOtpButton=findViewById(R.id.send_otp);
         mAuth=FirebaseAuth.getInstance();
+
+        otp.setVisibility(View.INVISIBLE);
 
         mCallbacks=new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential)
             {
                 signInWithPhoneAuthCredential(phoneAuthCredential);
-
             }
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e)
             {
-                Toast.makeText(phoneLoginActivity.this,"Phone verification failed",Toast.LENGTH_SHORT);
 
             }
             @Override
@@ -65,11 +65,6 @@ public class phoneLoginActivity extends AppCompatActivity {
             {
                 mVerificationId = verificationId;
                 mResendToken = token;
-                if(!TextUtils.isEmpty(verificationId))
-                    Log.d("send code", "code sent");
-                Log.d("send code", "code sent");
-
-
             }
         };
 
@@ -80,17 +75,17 @@ public class phoneLoginActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(phone))
         {
             PhoneAuthProvider.getInstance().verifyPhoneNumber("+91"+phone,120,TimeUnit.SECONDS,phoneLoginActivity.this,mCallbacks);
-
+            sendOtpButton.setVisibility(View.INVISIBLE);
+            otp.setVisibility(View.VISIBLE);
         }
-        sendOtpButton.setVisibility(View.INVISIBLE);
-        otp.setVisibility(View.VISIBLE);
         new CountDownTimer(120000,1000)
         {
+            TextView time= findViewById(R.id.time);
 
             @Override
             public void onTick(long l)
             {
-                TextView time= findViewById(R.id.time);
+
                 time.setText(" "+l/1000);
             }
 
@@ -99,6 +94,8 @@ public class phoneLoginActivity extends AppCompatActivity {
             {
                 sendOtpButton.setVisibility(View.VISIBLE);
                 otp.setVisibility(View.INVISIBLE);
+                time.setVisibility(View.INVISIBLE);
+
             }
         }.start();
 
@@ -124,5 +121,13 @@ public class phoneLoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void verify(View view)
+    {
+        String otpText=otp.getText().toString();
+        if(!TextUtils.isEmpty(otpText))
+        credential = PhoneAuthProvider.getCredential(mVerificationId,otpText);
+        signInWithPhoneAuthCredential(credential);
     }
 }
