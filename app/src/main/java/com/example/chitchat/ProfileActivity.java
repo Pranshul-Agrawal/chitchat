@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -88,57 +89,53 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void manageChatRequest() {
-        chatRequestRef.addValueEventListener(new ValueEventListener() {
+        chatRequestRef.child(senderUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(reciveUserId)) {
-
-
-                    String requestType = snapshot.child(reciveUserId).child("request_type").getValue().toString();
-                    if (requestType.equals("recived")) {
-                        currentState = "request_sent";
-                        sendMessageButton.setText("Cancel Request");
-                    }
+                if (snapshot.exists() && snapshot.hasChild(reciveUserId)) {
+                    currentState = "request_sent";
+                    sendMessageButton.setText("Cancel Request");
+                    sendMessageButton.setEnabled(true);
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
+
         });
         if (!senderUserId.equals(reciveUserId)) {
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sendMessageButton.setEnabled(false);
+
                     if (currentState.equals("new")) {
-                        chatRequestRef.child(senderUserId).child("request_type").setValue("sent").addOnCompleteListener(new OnCompleteListener<Void>() {
+                        sendMessageButton.setEnabled(false);
+                        chatRequestRef.child(senderUserId).child("request_type").setValue("send").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                chatRequestRef.child(senderUserId).child(reciveUserId).child("request_type").setValue("recived");
+                                currentState = "request_sent";
+                                sendMessageButton.setText("Cancel Request");
+                                sendMessageButton.setEnabled(true);
+                            }
+                        });
+                    } else if (currentState.equals("request_sent")) {
+                        chatRequestRef.child(senderUserId).child(reciveUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    chatRequestRef.child(reciveUserId).child("request_type").setValue("recived").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                sendMessageButton.setEnabled(true);
-                                                sendMessageButton.setText("Cancel Request");
-                                            }
-                                        }
-                                    });
+                                    currentState = "new";
+                                    sendMessageButton.setText("Send Request");
+                                    sendMessageButton.setEnabled(true);
                                 }
                             }
                         });
                     }
                 }
             });
-
         } else {
             sendMessageButton.setVisibility(View.INVISIBLE);
         }
-
     }
-
-
 }
