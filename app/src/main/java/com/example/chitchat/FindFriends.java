@@ -1,5 +1,6 @@
 package com.example.chitchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +45,21 @@ public class FindFriends extends AppCompatActivity {
         FirebaseRecyclerOptions<Contacts> options = new FirebaseRecyclerOptions.Builder<Contacts>().setQuery(userRef, Contacts.class).build();
         FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull FindFriendViewHolder holder, int position, @NonNull Contacts model) {
+            protected void onBindViewHolder(@NonNull FindFriendViewHolder holder, final int position, @NonNull Contacts model) {
                 holder.name.setText(model.getName());
                 holder.status.setText(model.getStatus());
                 Picasso.get().load(model.getProfile()).into(holder.imageView);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String visitUserId = getRef(position).getKey();
+                        Intent profileIntent = new Intent(FindFriends.this, ProfileActivity.class);
+                        profileIntent.putExtra("visitUserid", visitUserId);
+                        startActivity(profileIntent);
+
+                    }
+                });
 
             }
 
