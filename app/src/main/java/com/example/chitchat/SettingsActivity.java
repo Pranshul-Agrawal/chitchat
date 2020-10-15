@@ -1,3 +1,4 @@
+
 package com.example.chitchat;
 
 import android.content.Intent;
@@ -101,15 +102,19 @@ public class SettingsActivity extends AppCompatActivity {
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveUserStatus);
                     Picasso.get().load(retrieveUserImage).into(profileimg);
+                    // manageChatRequest();
+
                 } else if ((snapshot.exists()) && (snapshot.hasChild("username"))) {
                     String retrieveUserName = snapshot.child("username").getValue().toString();
                     String retrieveUserStatus = snapshot.child("status").getValue().toString();
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveUserStatus);
+                    // manageChatRequest();
 
                 } else {
                     userName.setVisibility(View.VISIBLE);
                     Toast.makeText(SettingsActivity.this, "Set or Update Profile", Toast.LENGTH_SHORT).show();
+                    //  manageChatRequest();
                 }
 
             }
