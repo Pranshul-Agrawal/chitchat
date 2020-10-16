@@ -2,6 +2,7 @@ package com.example.chitchat;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -63,6 +64,8 @@ public class chatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message = snapshot.getValue(Message.class);
                 messageList.add(message);
+                int ctr = 0;
+                Log.d("ctr", ctr++ + " ");
                 messageAdapter.notifyDataSetChanged();
                 userMessageList.smoothScrollToPosition(userMessageList.getAdapter().getItemCount());
             }
