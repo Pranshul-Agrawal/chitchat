@@ -5,8 +5,6 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
