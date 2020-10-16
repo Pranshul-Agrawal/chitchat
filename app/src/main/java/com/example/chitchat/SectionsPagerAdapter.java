@@ -29,6 +29,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return new GroupFragment();
             case 2:
                 return new ContactFragment();
+            case 3:
+                return new RequestFragment();
             default:
                 return null;
 
@@ -45,6 +47,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return "Group";
             case 2:
                 return "Contact";
+            case 3:
+                return "Request";
             default:
                 return null;
 
@@ -54,6 +58,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

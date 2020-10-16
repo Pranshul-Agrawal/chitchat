@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@color/yellow"
-    tools:context=".ChatFragment">
+    tools:context=".RequestFragment">
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_list"
+        android:id="@+id/chat_request_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

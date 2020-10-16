@@ -68,11 +68,11 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(SettingsActivity.this, "Username or Status is invalid", Toast.LENGTH_SHORT).show();
         } else {
 
-            HashMap<String, String> profileDetail = new HashMap<>();
+            HashMap<String, Object> profileDetail = new HashMap<>();
             profileDetail.put("userId", userId);
             profileDetail.put("username", username);
             profileDetail.put("status", userstatus);
-            rootRef.child("Users").child(userId).setValue(profileDetail).addOnCompleteListener(new OnCompleteListener<Void>() {
+            rootRef.child("Users").child(userId).updateChildren(profileDetail).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -102,19 +102,19 @@ public class SettingsActivity extends AppCompatActivity {
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveUserStatus);
                     Picasso.get().load(retrieveUserImage).into(profileimg);
-                    // manageChatRequest();
+
 
                 } else if ((snapshot.exists()) && (snapshot.hasChild("username"))) {
                     String retrieveUserName = snapshot.child("username").getValue().toString();
                     String retrieveUserStatus = snapshot.child("status").getValue().toString();
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveUserStatus);
-                    // manageChatRequest();
+
 
                 } else {
                     userName.setVisibility(View.VISIBLE);
                     Toast.makeText(SettingsActivity.this, "Set or Update Profile", Toast.LENGTH_SHORT).show();
-                    //  manageChatRequest();
+
                 }
 
             }
