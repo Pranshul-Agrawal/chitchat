@@ -33,12 +33,14 @@ public class chatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
     private RecyclerView userMessageList;
+    Bundle savedInstanceState;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        this.savedInstanceState = savedInstanceState;
         mToolbar = findViewById(R.id.group_chat_bar);
         setSupportActionBar(mToolbar);
         messgaeReciverId = getIntent().getExtras().get("reciverid").toString();
@@ -63,6 +65,7 @@ public class chatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message = snapshot.getValue(Message.class);
                 messageList.add(message);
+                int ctr = 0;
                 messageAdapter.notifyDataSetChanged();
                 userMessageList.smoothScrollToPosition(userMessageList.getAdapter().getItemCount());
             }
@@ -89,6 +92,12 @@ public class chatActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onRestart() {
+
+        super.onRestart();
+        onCreate(savedInstanceState);
+    }
 
     public void sendMessage(View view) {
         String messageText = this.messageText.getText().toString();

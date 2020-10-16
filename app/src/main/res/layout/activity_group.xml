@@ -40,17 +40,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-    <EditText
-        android:id="@+id/text_reply_box"
-        android:layout_width="348dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:autofillHints=""
-        android:hint="@string/message"
-        android:padding="17dp" />
+        android:background="#E19B67">
+
+        <EditText
+            android:id="@+id/text_reply_box"
+            android:layout_width="348dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:autofillHints=""
+            android:hint="@string/message"
+            android:padding="17dp" />
 
     <ImageButton
         android:id="@+id/send_message"
