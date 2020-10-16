@@ -61,7 +61,7 @@ public class ContactFragment extends Fragment {
                             String pImage = snapshot.child("profile").getValue().toString();
                             Picasso.get().load(pImage).placeholder(R.drawable.profile_image).into(holder.profileimage);
                         }
-                        String status = snapshot.child("status").getValue().toString();
+                        String status = snapshot.child("User_State").child("State").getValue().toString();
                         String name = snapshot.child("username").getValue().toString();
                         holder.username.setText(name);
                         holder.userstatus.setText(status);

@@ -1,7 +1,10 @@
 package com.example.chitchat;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -26,10 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
+    private String currentUid;
     private DatabaseReference rootRef;
 
 
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         rootRef = FirebaseDatabase.getInstance().getReference();
 
+
     }
 
     public void onStart() {
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
         } else {
+            updateUserStatus("Online");
             String currentUserId = currentUser.getUid();
             rootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -76,6 +83,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (currentUser != null)
+            updateUserStatus("offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (currentUser != null)
+            updateUserStatus("offline");
     }
 
     @Override
@@ -133,5 +154,24 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateUserStatus(String state) {
+        String currentTime, currentDate;
+        Calendar calForDate = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd yyyy");
+        currentDate = currentDateFormat.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
+        currentTime = currentTimeFormat.format(calForTime.getTime());
+        HashMap<String, Object> statusMap = new HashMap<>();
+        statusMap.put("CurrentDate", currentDate);
+        statusMap.put("CurrentTime", currentTime);
+        statusMap.put("State", state);
+        currentUid = currentUser.getUid();
+        rootRef.child("Users").child(currentUid).child("User_State").updateChildren(statusMap);
+
+
     }
 }
