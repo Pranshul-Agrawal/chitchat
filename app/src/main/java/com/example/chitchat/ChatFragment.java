@@ -1,5 +1,6 @@
 package com.example.chitchat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ public class ChatFragment extends Fragment {
             protected void onBindViewHolder(@NonNull final PrivateChatViewHolder holder, int position, @NonNull Contacts model) {
                 final String userId = getRef(position).getKey();
                 userRef.child(userId).addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
@@ -67,7 +69,7 @@ public class ChatFragment extends Fragment {
                             String status = snapshot.child("status").getValue().toString();
                             String name = snapshot.child("username").getValue().toString();
                             holder.username.setText(name);
-                            holder.userstatus.setText("Last seen: " + "\n" + "date " + " time");
+                            holder.userstatus.setText("Last seen: " + snapshot.child("User_State").child("CurrentDate").getValue() + "\n" + snapshot.child("User_State").child("CurrentTime").getValue());
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
