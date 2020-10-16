@@ -12,7 +12,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_users"
         android:layout_width="match_parent"
-        android:layout_height="588dp"
+        android:layout_height="430dp"
         android:layout_below="@id/group_chat_bar" />
 
     <LinearLayout
@@ -25,16 +25,17 @@
         <EditText
             android:id="@+id/text_reply_box"
             android:layout_width="348dp"
-            android:layout_height="wrap_content"
+            android:layout_height="51dp"
             android:layout_marginBottom="0dp"
             android:autofillHints=""
+            android:background="#E19B67"
             android:hint="@string/message"
             android:padding="17dp" />
 
         <ImageButton
             android:id="@+id/send_message"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:contentDescription="@string/send"
             android:onClick="sendMessage"
             android:src="@drawable/send_message" />
