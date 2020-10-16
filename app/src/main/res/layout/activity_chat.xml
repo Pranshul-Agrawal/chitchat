@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="#E19B67"
         android:orientation="horizontal">
 
         <EditText
@@ -28,7 +29,6 @@
             android:layout_height="51dp"
             android:layout_marginBottom="0dp"
             android:autofillHints=""
-            android:background="#E19B67"
             android:hint="@string/message"
             android:padding="17dp" />
 
