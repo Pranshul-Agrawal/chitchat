@@ -1,5 +1,6 @@
 package com.example.chitchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,7 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contactView = inflater.inflate(R.layout.fragment_contact, container, false);
         myContactList = contactView.findViewById(R.id.contact_list);
         myContactList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -65,9 +65,15 @@ public class ContactFragment extends Fragment {
                         String name = snapshot.child("username").getValue().toString();
                         holder.username.setText(name);
                         holder.userstatus.setText(status);
-                        if (currentUserId.equals(UserId)) {
-                            holder.itemView.setVisibility(View.GONE);
-                        }
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent chatIntent = new Intent(getContext(), chatActivity.class);
+                                chatIntent.putExtra("recivername", holder.username.getText().toString());
+                                chatIntent.putExtra("reciverid", UserId);
+                                startActivity(chatIntent);
+                            }
+                        });
                     }
 
                     @Override
