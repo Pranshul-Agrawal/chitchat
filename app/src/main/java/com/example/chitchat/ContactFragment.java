@@ -50,25 +50,23 @@ public class ContactFragment extends Fragment {
         super.onStart();
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Contacts>().setQuery(contactRef, Contacts.class).build();
         FirebaseRecyclerAdapter<Contacts, ContactsViewHolder> adapter = new FirebaseRecyclerAdapter<Contacts, ContactsViewHolder>(options) {
+
             @Override
-            protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, int position, @NonNull Contacts model) {
-                String UserId = getRef(position).getKey();
+            protected void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position, @NonNull Contacts model) {
+                final String UserId = getRef(position).getKey();
                 userRef.child(UserId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.hasChild("profile")) {
                             String pImage = snapshot.child("profile").getValue().toString();
-                            String status = snapshot.child("status").getValue().toString();
-                            String name = snapshot.child("username").getValue().toString();
-                            holder.username.setText(name);
-                            holder.userstatus.setText(status);
                             Picasso.get().load(pImage).placeholder(R.drawable.profile_image).into(holder.profileimage);
-                        } else {
-                            String status = snapshot.child("status").getValue().toString();
-                            String name = snapshot.child("username").getValue().toString();
-                            holder.username.setText(name);
-                            holder.userstatus.setText(status);
-
+                        }
+                        String status = snapshot.child("status").getValue().toString();
+                        String name = snapshot.child("username").getValue().toString();
+                        holder.username.setText(name);
+                        holder.userstatus.setText(status);
+                        if (currentUserId.equals(UserId)) {
+                            holder.itemView.setVisibility(View.GONE);
                         }
                     }
 
@@ -76,6 +74,8 @@ public class ContactFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
+
+
                 });
             }
 
