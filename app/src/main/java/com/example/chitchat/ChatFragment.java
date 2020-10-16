@@ -37,7 +37,10 @@ public class ChatFragment extends Fragment {
         privateChatView = inflater.inflate(R.layout.fragment_chat, container, false);
         listView = privateChatView.findViewById(R.id.chat_list);
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
-        privatechatRef = FirebaseDatabase.getInstance().getReference().child("contacts").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        try {
+            privatechatRef = FirebaseDatabase.getInstance().getReference().child("contacts").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        } catch (Exception Ignnore) {
+        }
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         return privateChatView;
     }
@@ -92,7 +95,11 @@ public class ChatFragment extends Fragment {
             }
         };
         listView.setAdapter(adapter);
-        adapter.startListening();
+        try {
+            adapter.startListening();
+        } catch (Exception Ignore) {
+        }
+        ;
     }
 
     public static class PrivateChatViewHolder extends RecyclerView.ViewHolder {
