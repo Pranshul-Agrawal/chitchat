@@ -36,8 +36,8 @@ public class GroupActivity extends AppCompatActivity {
     private EditText message;
     private ScrollView mScrollView;
     private TextView displayMessage;
-    private String groupName,currentUid,currentUname ,cDate,cTime;
-    private DatabaseReference userRef,groupNameRef,groupMessageKeyRef;
+    private String groupName, currentUid, currentUname, cDate, cTime;
+    private DatabaseReference userRef, groupNameRef, groupMessageKeyRef;
 
 
     @Override
