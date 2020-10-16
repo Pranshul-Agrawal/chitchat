@@ -39,9 +39,9 @@ public class ContactFragment extends Fragment {
         contactView = inflater.inflate(R.layout.fragment_contact, container, false);
         myContactList = contactView.findViewById(R.id.contact_list);
         myContactList.setLayoutManager(new LinearLayoutManager(getContext()));
-        contactRef = FirebaseDatabase.getInstance().getReference().child("contacts");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        contactRef = FirebaseDatabase.getInstance().getReference().child("contacts").child(currentUserId);
         return contactView;
     }
 

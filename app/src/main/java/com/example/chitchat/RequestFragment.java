@@ -152,7 +152,28 @@ public class RequestFragment extends Fragment {
                                 });
                             }
                             if (type.equals("sent")) {
-                                holder.itemView.setVisibility(View.GONE);
+                                userRef.child(listUserId).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.hasChild("profile")) {
+                                            String pImage = snapshot.child("profile").getValue().toString();
+                                            Picasso.get().load(pImage).placeholder(R.drawable.profile_image).into(holder.imageView);
+                                        }
+                                        String status = "Request Sent";
+                                        final String name = snapshot.child("username").getValue().toString();
+                                        holder.name.setText(name);
+                                        holder.status.setText(status);
+                                        holder.itemView.findViewById(R.id.accept_request).setVisibility(View.INVISIBLE);
+                                        holder.itemView.findViewById(R.id.decline_request).setVisibility(View.INVISIBLE);
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
+
                             }
 
                         }
