@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -76,7 +77,12 @@ public class GroupActivity extends AppCompatActivity {
                         String message = (String) ((DataSnapshot) iterator.next()).getValue();
                         String name = (String) ((DataSnapshot) iterator.next()).getValue();
                         String time = (String) ((DataSnapshot) iterator.next()).getValue();
-                        displayMessage.append(date+" ("+time+") "+"\n"+message+"\n"+name+"\n\n\n");
+                        displayMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                        displayMessage.append(date + " : " + time + "\n");
+                        displayMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
+                        displayMessage.append(message + "\n");
+                        displayMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                        displayMessage.append(name + "\n\n\n");
 
                         mScrollView.post(new Runnable() {
                             @Override
